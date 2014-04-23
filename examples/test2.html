@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>JS App Testing</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <script type='text/javascript' src='../node_modules/jquery/dist/jquery.js'></script>
+        <script type='text/javascript' src='../node_modules/underscore/underscore.js'></script>
+        <script type='text/javascript' src='../node_modules/backbone/backbone.js'></script>
+        <script type='text/javascript' src='../node_modules/functoids/functoids.js'></script>
+        
+        <script type='text/javascript' src='../japp.js'></script>
+
+        <script type='text/javascript'>
+            $(document).ready(function() {
+                JA.build();
+
+                var home = JA.addPage({
+                    id: "home",
+                    beforeActivate: function (next) {
+                        next("homeDisplay");
+                    }
+                });
+
+                home.addDisplay({
+                    id: "homeDisplay",
+                    container: "#homeContainer",
+                    template: "#homeDisplay",
+                    events: {
+                        "click a.next": function (ev) {
+                            ev.preventDefault();
+                            home.navigate("display1");
+                        }
+                    }
+                });
+
+                home.addDisplay({
+                    id: "display1",
+                    container: "#display1Container",
+                    template: "#display1",
+                    events: {
+                        "click a.next": function (ev) {
+                            ev.preventDefault();
+                            home.navigate("display2");
+                        }
+                    }
+                });
+
+                home.addDisplay({
+                    id: "display2",
+                    container: "#display2Container",
+                    template: "#display2",
+                    events: {
+                        "click a.next": function (ev) {
+                            ev.preventDefault();
+                            home.navigate("homeDisplay");
+                        }
+                    }
+                });
+
+                JA.startRouter();
+                JA.navigate('home');
+            });
+        </script>
+
+    </head>
+    <body>
+        <div id='homeContainer'>
+            <div id='homeDisplay'>
+                <h2>Home!</h2>
+                <a href='#' class='next'>Next</a>
+            </div>
+        </div>
+
+        <div id='display1Container'>
+            <div id='display1'>
+                <h2>Page 1 Open!</h2>
+                <a href='#' class='next'>Next</a>
+            </div>
+        </div>
+
+        <div id='display2Container'>
+            <div id='display2'>
+                <h2>Page 2 Open!</h2>
+                <a href='#' class='next'>Next</a>
+            </div>
+        </div>
+
+    </body>
+</html>

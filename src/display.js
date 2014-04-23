@@ -19,9 +19,10 @@ JA.Display = function (options) {
 
     if (!this.selector) this.selector = this.container;
 
-
     this.$container = $(this.container);
     this.render();
+
+    this.$el = this.$();
     this.delegateEvents(this.events);
 };
 

@@ -6,8 +6,8 @@ var defaultErrorHandler = function(jqXHR, textStatus, errorThrown) {
 };
 
 var JApp = function(options) {
-    this._currentPage = null;
-    this._currentDisplay = null;
+    this._activePage = null;
+    this._activeDisplay = null;
     this._pages = [];
     this._pageById = {};
     this.routes = {};
@@ -21,12 +21,13 @@ _.extend(JApp.prototype, {
     constructor: function() {},
     // routes
     createRoutesForPages: function() {
+        var self = this;
         _.each(this._pages, function(page) {
-            if (!page.isRoute || this.routes[page.id]) return;
-            this.routes[page.id] = _.bind(function() {
-                this.navigate(page.id);
-            }, this);
-        }, this);
+            if (!page.isRoute || self.routes[page.id]) return;
+            self.routes[page.id] = function() {
+                self.navigate(page.id);
+            };
+        });
     },
     startRouter: function() {
         this.createRoutesForPages();
@@ -52,23 +53,28 @@ _.extend(JApp.prototype, {
         throw new Error("Page " + pageId + " not found!");
     },
     currentPage: function() {
-        return this._currentPage;
+        return this._activePage;
     },
     currentDisplay: function() {
-        return this._currentDisplay;
+        return this._activeDisplay;
     },
     //
     currentDisplay: function() {
-        return this._currentDisplay;
+        return this._activeDisplay;
     },
     navigate: function(pageId) {
         F.demandGoodString(pageId, "pageId");
-        this._currentPage = null;
+        this._activePage = null;
         _.each(this._pages, function(page) {
-            if (page.id !== pageId) return page.deactivate();
+            if (page.id !== pageId) {
+                return page.deactivate();
+            }
             page.activate();
-            this._currentPage = page;
+            this._activePage = page;
         }, this);
+        if (this._activePage == null) {
+            throw new Error("Page " + pageId + " not found");
+        }
     },
     // ajax
     get: function(url, data, callback) {
@@ -194,7 +200,7 @@ var pageTemplate = {
 JA.Page = function(options) {
     F.demandGoodObject(options, "options");
     F.demandGoodString(options.id, "options.id");
-    this._currentDisplay = null;
+    this._activeDisplay = null;
     JA.extendAndApplyDefaults(this, options, pageTemplate);
     _.extend(this, Backbone.Events);
 };
@@ -216,13 +222,13 @@ _.extend(JA.Page.prototype, {
     },
     navigate: function(displayId) {
         F.demandGoodString(displayId, "displayId");
-        this._currentDisplay = null;
-        JA._currentDisplay = null;
+        this._activeDisplay = null;
+        JA._activeDisplay = null;
         _.each(this._displays, function(display) {
             if (display.id !== displayId) return display.deactivate();
             display.activate();
-            this._currentDisplay = display;
-            JA._currentDisplay = display;
+            this._activeDisplay = display;
+            JA._activeDisplay = display;
         }, this);
     },
     activate: function() {
@@ -234,10 +240,11 @@ _.extend(JA.Page.prototype, {
         });
     },
     deactivate: function() {
-        var self = this;
-        this.beforeDeactivate(function() {
-            self._activeDisplay.deactivate();
-            self.afterDeactivate();
-        });
+        this.beforeDeactivate(_.bind(function() {
+            if (this._activeDisplay) {
+                this._activeDisplay.deactivate();
+            }
+            this.afterDeactivate();
+        }, this));
     }
 });

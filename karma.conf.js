@@ -11,11 +11,11 @@ module.exports = function(config) {
         frameworks: ['mocha'],
 
         files: [
+            'node_modules/jquery/dist/jquery.js',
             'node_modules/underscore/underscore.js',
             'node_modules/backbone/backbone.js',
             'node_modules/functoids/functoids.js',
             'node_modules/should/should.js',
-            'node_modules/jquery/dist/jquery.js',
 
             'src/app.js',
             'src/display.js',

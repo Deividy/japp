@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>JS App Testing</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <script type='text/javascript' src='../node_modules/jquery/dist/jquery.js'></script>
+        <script type='text/javascript' src='../node_modules/underscore/underscore.js'></script>
+        <script type='text/javascript' src='../node_modules/backbone/backbone.js'></script>
+        <script type='text/javascript' src='../node_modules/functoids/functoids.js'></script>
+        
+        <script type='text/javascript' src='../japp.js'></script>
+
+        <script type='text/javascript'>
+            $(document).ready(function() {
+                JA.build();
+
+                JA.addPage({
+                    id: "home",
+                    beforeActivate: function (next) {
+                        next("homeDisplay");
+                    }
+                }).addDisplay({
+                    id: "homeDisplay",
+                    container: "#homeContainer",
+                    template: "#homeDisplay" 
+                });
+
+                JA.addPage({
+                    id: "page1",
+                    beforeActivate: function (next) {
+                        next("display1");
+                    }
+                }).addDisplay({
+                    id: "display1",
+                    container: "#page1Container",
+                    template: "#page1Display" 
+                });
+
+                JA.addPage({
+                    id: "page2",
+                    beforeActivate: function (next) {
+                        next("display2");
+                    }
+                }).addDisplay({
+                    id: "display2",
+                    container: "#page2Container",
+                    template: "#page2Display" 
+                });
+
+                JA.startRouter();
+                JA.navigate('home');
+            });
+        </script>
+
+    </head>
+    <body>
+        <h2>Hello World!</h2>
+        <ul class='nav'>
+            <li><a href='#page1'>Page 1</a></li>
+            <li><a href='#page2'>Page 2</a></li>
+        </ul>
+
+        <div id='homeContainer'>
+            <div id='homeDisplay'>
+                <h3>Home!</h3>
+            </div>
+        </div>
+
+        <div id='page1Container'>
+            <div id='page1Display'>
+                <h3>Page 1 Open!</h3>
+            </div>
+        </div>
+
+        <div id='page2Container'>
+            <div id='page2Display'>
+                <h3>Page 2 Open!</h3>
+            </div>
+        </div>
+
+    </body>
+</html>

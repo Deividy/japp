@@ -17,7 +17,7 @@ JA.Page = function (options) {
     F.demandGoodObject(options, "options");
     F.demandGoodString(options.id, "options.id");
 
-    this._currentDisplay = null;
+    this._activeDisplay = null;
 
     JA.extendAndApplyDefaults(this, options, pageTemplate);
     _.extend(this, Backbone.Events);
@@ -48,15 +48,15 @@ _.extend(JA.Page.prototype, {
     navigate: function (displayId) {
         F.demandGoodString(displayId, 'displayId');
 
-        this._currentDisplay = null;
-        JA._currentDisplay = null;
+        this._activeDisplay = null;
+        JA._activeDisplay = null;
 
         _.each(this._displays, function (display) {
             if (display.id !== displayId) return display.deactivate();
             display.activate();
 
-            this._currentDisplay = display;
-            JA._currentDisplay = display;
+            this._activeDisplay = display;
+            JA._activeDisplay = display;
         }, this);
     },
 
@@ -71,10 +71,11 @@ _.extend(JA.Page.prototype, {
     },
 
     deactivate: function () {
-        var self = this;
-        this.beforeDeactivate(function () {
-            self._activeDisplay.deactivate();
-            self.afterDeactivate();
-        });
+        this.beforeDeactivate(_.bind(function () {
+            if (this._activeDisplay) {
+                this._activeDisplay.deactivate();
+            }
+            this.afterDeactivate();
+        }, this));
     }
 });

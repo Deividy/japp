@@ -62,8 +62,12 @@ describe("JA app tests", function () {
 
         JA.navigate('homePage');
         $("#homeContainer").css("display").should.be.eql('block');
-    });
 
+        var page = JA.page('homePage');
+        page.deactivate();
+
+        $("#homeContainer").css("display").should.be.eql('none');
+    });
 
     // ajax
     it('get', function (done) {

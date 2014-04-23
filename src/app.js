@@ -6,8 +6,8 @@ var defaultErrorHandler = function (jqXHR, textStatus, errorThrown) {
 };
 
 var JApp = function (options) {
-    this._currentPage = null;
-    this._currentDisplay = null;
+    this._activePage = null;
+    this._activeDisplay = null;
 
     this._pages = [ ];
     this._pageById = { };
@@ -28,14 +28,16 @@ _.extend(JApp.prototype, {
 
     // routes
     createRoutesForPages: function () {
+        var self = this;
+
         _.each(this._pages, function (page) {
-            if (!page.isRoute || this.routes[page.id]) return;
+            if (!page.isRoute || self.routes[page.id]) return;
 
-            this.routes[page.id] = _.bind(function () {
-                this.navigate(page.id);
-            }, this);
+            self.routes[page.id] = function () {
+                self.navigate(page.id);
+            };
 
-        }, this);
+        });
     },
 
     startRouter: function () {
@@ -72,27 +74,35 @@ _.extend(JApp.prototype, {
     },
 
     currentPage: function () {
-        return this._currentPage;
+        return this._activePage;
     },
     currentDisplay: function () {
-        return this._currentDisplay;
+        return this._activeDisplay;
     },
     //
 
     currentDisplay: function () {
-        return this._currentDisplay;
+        return this._activeDisplay;
     },
 
     navigate: function (pageId) {
         F.demandGoodString(pageId, 'pageId');
 
-        this._currentPage = null;
+        this._activePage = null;
+
         _.each(this._pages, function (page) {
-            if (page.id !== pageId) return page.deactivate();
+            if (page.id !== pageId) {
+                return page.deactivate();
+            }
+
             page.activate();
 
-            this._currentPage = page;
+            this._activePage = page;
         }, this);
+
+        if (this._activePage == null) {
+            throw new Error("Page " + pageId + " not found");
+        }
     },
 
     // ajax

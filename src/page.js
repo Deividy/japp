@@ -19,8 +19,11 @@ JA.Page = function (options) {
 
     this._activeDisplay = null;
 
-    JA.extendAndApplyDefaults(this, options, pageTemplate);
+    _.extend(this, options);
+    _.defaults(this, pageTemplate);
     _.extend(this, Backbone.Events);
+
+    this._displays = [ ];
 };
 
 _.extend(JA.Page.prototype, {

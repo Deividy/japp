@@ -23,9 +23,6 @@ JA = {
         }
         child.prototype = new c();
         return child;
-    },
-    extendAndApplyDefaults: function(context, obj, defaults) {
-        _.extend(context, _.defaults(obj, defaults));
     }
 };
 
@@ -131,7 +128,7 @@ var displayTemplate = {
         next();
     },
     render: function() {
-        this.$container.html(this.template.apply(this, arguments));
+        this.$container.html(this.template());
         return this;
     },
     template: function() {
@@ -139,19 +136,20 @@ var displayTemplate = {
     }
 };
 
+var backboneViewEvents = [ "delegateEvents", "undelegateEvents" ];
+
 JA.Display = function(options) {
     F.demandGoodObject(options, "options");
     F.demandGoodString(options.id, "options.id");
     F.demandGoodString(options.container, "options.container");
-    JA.extendAndApplyDefaults(this, options, displayTemplate);
+    _.extend(this, options);
+    _.defaults(this, displayTemplate);
     if (!this.selector) this.selector = this.container;
     this.$container = $(this.container);
     this.render();
     this.$el = this.$();
     this.delegateEvents(this.events);
 };
-
-JA.inherit(JA.Display, Backbone.View);
 
 _.extend(JA.Display.prototype, {
     $: function() {
@@ -177,7 +175,7 @@ _.extend(JA.Display.prototype, {
     show: function() {
         this.$().show();
     }
-});
+}, _.pick(Backbone.View.prototype, backboneViewEvents));
 
 var pageTemplate = {
     _displays: [],
@@ -197,8 +195,10 @@ JA.Page = function(options) {
     F.demandGoodObject(options, "options");
     F.demandGoodString(options.id, "options.id");
     this._activeDisplay = null;
-    JA.extendAndApplyDefaults(this, options, pageTemplate);
+    _.extend(this, options);
+    _.defaults(this, pageTemplate);
     _.extend(this, Backbone.Events);
+    this._displays = [];
 };
 
 _.extend(JA.Page.prototype, {

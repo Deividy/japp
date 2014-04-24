@@ -5,7 +5,7 @@ var displayTemplate = {
     beforeActivate: function (next) { next(); },
     
     render: function () {
-        this.$container.html(this.template.apply(this, arguments));
+        this.$container.html(this.template());
         return this;
     },
 
@@ -14,12 +14,18 @@ var displayTemplate = {
     }
 };
 
+var backboneViewEvents = [
+    'delegateEvents',
+    'undelegateEvents'
+];
+
 JA.Display = function (options) {
     F.demandGoodObject(options, "options");
     F.demandGoodString(options.id, "options.id");
     F.demandGoodString(options.container, "options.container");
 
-    JA.extendAndApplyDefaults(this, options, displayTemplate);
+    _.extend(this, options);
+    _.defaults(this, displayTemplate);
 
     if (!this.selector) this.selector = this.container;
 
@@ -29,8 +35,6 @@ JA.Display = function (options) {
     this.$el = this.$();
     this.delegateEvents(this.events);
 };
-
-JA.inherit(JA.Display, Backbone.View);
 
 _.extend(JA.Display.prototype, {
     $: function () {
@@ -57,4 +61,4 @@ _.extend(JA.Display.prototype, {
 
     hide: function () { this.$().hide(); },
     show: function () { this.$().show(); }
-});
+}, _.pick(Backbone.View.prototype, backboneViewEvents));

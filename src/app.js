@@ -28,10 +28,6 @@ JA = {
         child.prototype = new c();
 
         return child;
-    },
-
-    extendAndApplyDefaults: function (context, obj, defaults) {
-        _.extend(context, _.defaults(obj, defaults));
     }
 };
 

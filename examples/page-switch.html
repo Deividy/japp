@@ -18,34 +18,19 @@
             $(document).ready(function() {
                 JA.build();
 
-                JA.addPage({
-                    id: "home",
-                    beforeActivate: function (next) {
-                        next("homeDisplay");
-                    }
-                }).addDisplay({
+                JA.addPage({ id: "home" }).addDisplay({
                     id: "homeDisplay",
                     container: "#homeContainer",
                     templateSelector: "#homeDisplay" 
                 });
 
-                JA.addPage({
-                    id: "page1",
-                    beforeActivate: function (next) {
-                        next("display1");
-                    }
-                }).addDisplay({
+                JA.addPage({ id: "page1" }).addDisplay({
                     id: "display1",
                     container: "#page1Container",
                     templateSelector: "#page1Display" 
                 });
 
-                JA.addPage({
-                    id: "page2",
-                    beforeActivate: function (next) {
-                        next("display2");
-                    }
-                }).addDisplay({
+                JA.addPage({ id: "page2" }).addDisplay({
                     id: "display2",
                     container: "#page2Container",
                     templateSelector: "#page2Display" 

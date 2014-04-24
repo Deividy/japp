@@ -5,10 +5,7 @@ var page = null;
 describe("JA page tests", function () {
     it('instantiate', function () {
         page = new JA.Page({
-            id: "JAPage",
-            beforeActivate: function (firstDisplay) {
-                firstDisplay("JADisplay");
-            }
+            id: "JAPage"
         });
 
         page.id.should.eql("JAPage");

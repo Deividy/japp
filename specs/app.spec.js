@@ -27,10 +27,7 @@ describe("JA app tests", function () {
         JA.build();
 
         var homePage = JA.addPage({
-            id: "homePage",
-            beforeActivate: function (firstDisplay) {
-                firstDisplay("homeDisplay");
-            }
+            id: "homePage"
         });
 
         JA._pages.length.should.eql(1);

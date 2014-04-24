@@ -18,21 +18,16 @@
             $(document).ready(function() {
                 JA.build();
 
-                var home = JA.addPage({
-                    id: "home",
-                    beforeActivate: function (firstDisplay) {
-                        firstDisplay("homeDisplay");
-                    }
-                });
+                var home = JA.addPage({ id: "home" });
 
                 home.addDisplay({
                     id: "homeDisplay",
                     container: "#homeContainer",
                     templateSelector: "#homeDisplay",
                     events: {
-                        "click a.next": function (ev) {
+                        "click a.alert": function (ev) {
                             ev.preventDefault();
-                            home.navigate("display1");
+                            alert("Alert!");
                         }
                     }
                 });
@@ -40,25 +35,13 @@
                 home.addDisplay({
                     id: "display1",
                     container: "#display1Container",
-                    templateSelector: "#display1",
-                    events: {
-                        "click a.next": function (ev) {
-                            ev.preventDefault();
-                            home.navigate("display2");
-                        }
-                    }
+                    templateSelector: "#display1"
                 });
 
                 home.addDisplay({
                     id: "display2",
                     container: "#display2Container",
-                    templateSelector: "#display2",
-                    events: {
-                        "click a.next": function (ev) {
-                            ev.preventDefault();
-                            home.navigate("homeDisplay");
-                        }
-                    }
+                    templateSelector: "#display2"
                 });
 
                 JA.startRouter();
@@ -70,15 +53,14 @@
     <body>
         <div id='homeContainer'>
             <div id='homeDisplay'>
-                <h2>Home!</h2>
-                <a href='#' class='next'>Next</a>
+                <h2>Display home</h2>
+                <a href='#' class='alert'>Test an alert!</a>
             </div>
         </div>
 
         <div id='display1Container'>
             <div id='display1'>
-                <h2>Page 1 Open!</h2>
-                <a href='#' class='next'>Next</a>
+                <h2>Display 1</h2>
             </div>
         </div>
 
@@ -86,8 +68,7 @@
         </div>
 
         <script type='text/template' id='display2'>
-            <h2>Page 2 Open!</h2>
-            <a href='#' class='next'>Next</a>
+            <h2>Display 2</h2>
         </script>
 
     </body>

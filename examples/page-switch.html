@@ -18,10 +18,18 @@
             $(document).ready(function() {
                 JA.build();
 
-                JA.addPage({ id: "home" }).addDisplay({
+                var homePage = JA.addPage({ id: "homePage" });
+                
+                homePage.addDisplay({
                     id: "homeDisplay",
                     container: "#homeContainer",
                     templateSelector: "#homeDisplay" 
+                });
+
+                homePage.addDisplay({
+                    id: "homeDisplay2",
+                    container: "#homeContainer2",
+                    templateSelector: "#homeDisplay2" 
                 });
 
                 JA.addPage({ id: "page1" }).addDisplay({
@@ -36,7 +44,7 @@
                     templateSelector: "#page2Display" 
                 });
 
-                JA.navigate('home');
+                JA.navigate('homePage');
                 JA.startRouter();
             });
         </script>
@@ -45,6 +53,7 @@
     <body>
         <h2>Hello World!</h2>
         <ul class='nav'>
+            <li><a href='#homePage'>Home</a></li>
             <li><a href='#page1'>Page 1</a></li>
             <li><a href='#page2'>Page 2</a></li>
         </ul>
@@ -52,6 +61,12 @@
         <div id='homeContainer'>
             <div id='homeDisplay'>
                 <h3>Home!</h3>
+            </div>
+        </div>
+
+        <div id='homeContainer2'>
+            <div id='homeDisplay2'>
+                <h3>Home Display 2!</h3>
             </div>
         </div>
 

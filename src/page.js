@@ -8,8 +8,8 @@ var pageTemplate = {
     beforeDeactivate: function (next) { next(); },
     afterActivate: function () { },
 
-    beforeActivate: function (next) {
-        throw new Error("Must implement and pass a display id to next()");
+    beforeActivate: function (firstDisplay) {
+        throw new Error("Must implement and pass a display id to firstDisplay()");
     }
 };
 

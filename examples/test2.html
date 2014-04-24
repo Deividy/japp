@@ -20,8 +20,8 @@
 
                 var home = JA.addPage({
                     id: "home",
-                    beforeActivate: function (next) {
-                        next("homeDisplay");
+                    beforeActivate: function (firstDisplay) {
+                        firstDisplay("homeDisplay");
                     }
                 });
 

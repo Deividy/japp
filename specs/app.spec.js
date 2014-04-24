@@ -28,8 +28,8 @@ describe("JA app tests", function () {
 
         var homePage = JA.addPage({
             id: "homePage",
-            beforeActivate: function (next) {
-                next("homeDisplay");
+            beforeActivate: function (firstDisplay) {
+                firstDisplay("homeDisplay");
             }
         });
 

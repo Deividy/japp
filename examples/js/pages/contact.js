@@ -1,0 +1,1 @@
+JA.addPage({ id: "contact" });

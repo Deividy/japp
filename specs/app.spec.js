@@ -41,7 +41,6 @@ describe("JA app tests", function () {
         $("#homeTest").length.should.be.eql(0);
 
         var homePage = JA.page('homePage');
-
         homePage._displays.length.should.be.eql(0);
 
         var homeDisplay = homePage.addDisplay({

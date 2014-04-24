@@ -5,6 +5,30 @@ var defaultErrorHandler = function(jqXHR, textStatus, errorThrown) {
     window.location.reload(true);
 };
 
+JA = {
+    build: function(options) {
+        if (!options) options = {};
+        var app = new JApp(options);
+        _.extend(this, app);
+    },
+    inherit: function(child, superclass) {
+        function c() {
+            this.constructor = child.constructor;
+        }
+        c.prototype = superclass.prototype;
+        for (var prop in superclass) {
+            if (Object.hasOwnProperty.call(superclass, prop)) {
+                child[prop] = superclass[prop];
+            }
+        }
+        child.prototype = new c();
+        return child;
+    },
+    extendAndApplyDefaults: function(context, obj, defaults) {
+        _.extend(context, _.defaults(obj, defaults));
+    }
+};
+
 var JApp = function(options) {
     this._activePage = null;
     this._activeDisplay = null;
@@ -13,12 +37,10 @@ var JApp = function(options) {
     this.routes = {};
     _.extend(this, _.pick(options, allowedOptions));
     _.extend(this, Backbone.Events);
-    this.constructor.apply(this, arguments);
 };
 
 _.extend(JApp.prototype, {
     errorHandler: defaultErrorHandler,
-    constructor: function() {},
     // routes
     createRoutesForPages: function() {
         var self = this;
@@ -99,30 +121,6 @@ _.extend(JApp.prototype, {
     }
 });
 
-JA = {
-    build: function(options) {
-        if (!options) options = {};
-        var app = new JApp(options);
-        _.extend(this, app);
-    },
-    inherit: function(child, superclass) {
-        function c() {
-            this.constructor = child.constructor;
-        }
-        c.prototype = superclass.prototype;
-        for (var prop in superclass) {
-            if (Object.hasOwnProperty.call(superclass, prop)) {
-                child[prop] = superclass[prop];
-            }
-        }
-        child.prototype = new c();
-        return child;
-    },
-    extendAndApplyDefaults: function(context, obj, defaults) {
-        _.extend(context, _.defaults(obj, defaults));
-    }
-};
-
 var displayTemplate = {
     afterDeactivate: function() {},
     beforeDeactivate: function(next) {
@@ -133,8 +131,11 @@ var displayTemplate = {
         next();
     },
     render: function() {
-        this.$container.html(this._template());
+        this.$container.html(this.template.apply(this, arguments));
         return this;
+    },
+    template: function() {
+        return _.template($(this.templateSelector).html());
     }
 };
 
@@ -175,12 +176,6 @@ _.extend(JA.Display.prototype, {
     },
     show: function() {
         this.$().show();
-    },
-    _template: function() {
-        if (_.isFunction(this.template)) {
-            return this.template.apply(this, arguments);
-        }
-        return _.template($(this.template).html());
     }
 });
 
@@ -213,9 +208,9 @@ _.extend(JA.Page.prototype, {
         if (display) return display;
         throw new Error("Display " + displayId + " not found!");
     },
-    addDisplay: function(obj) {
-        F.demandGoodObject(obj, "obj");
-        var display = new JA.Display(obj);
+    addDisplay: function(displayObj) {
+        F.demandGoodObject(displayObj, "displayObj");
+        var display = new JA.Display(displayObj);
         this._displays.push(display);
         this._displayById[display.id] = display;
         display.hide();
@@ -241,11 +236,12 @@ _.extend(JA.Page.prototype, {
         });
     },
     deactivate: function() {
-        this.beforeDeactivate(_.bind(function() {
-            if (this._activeDisplay) {
-                this._activeDisplay.deactivate();
+        var self = this;
+        this.beforeDeactivate(function() {
+            if (self._activeDisplay) {
+                self._activeDisplay.deactivate();
             }
-            this.afterDeactivate();
-        }, this));
+            self.afterDeactivate();
+        });
     }
 });

@@ -33,10 +33,10 @@ _.extend(JA.Page.prototype, {
         throw new Error("Display " + displayId + " not found!");
     },
 
-    addDisplay: function (obj) {
-        F.demandGoodObject(obj, 'obj');
+    addDisplay: function (displayObj) {
+        F.demandGoodObject(displayObj, 'displayObj');
 
-        var display = new JA.Display(obj)
+        var display = new JA.Display(displayObj)
         this._displays.push(display);
         this._displayById[display.id] = display;
 
@@ -62,6 +62,7 @@ _.extend(JA.Page.prototype, {
 
     activate: function () {
         var self = this;
+
         this.beforeActivate(function (displayId) {
             F.demandGoodString(displayId, 'displayId');
 
@@ -71,11 +72,13 @@ _.extend(JA.Page.prototype, {
     },
 
     deactivate: function () {
-        this.beforeDeactivate(_.bind(function () {
-            if (this._activeDisplay) {
-                this._activeDisplay.deactivate();
+        var self = this;
+
+        this.beforeDeactivate(function () {
+            if (self._activeDisplay) {
+                self._activeDisplay.deactivate();
             }
-            this.afterDeactivate();
-        }, this));
+            self.afterDeactivate();
+        });
     }
 });

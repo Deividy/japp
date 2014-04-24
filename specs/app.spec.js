@@ -1,4 +1,4 @@
-document.body.innerHTML = __html__['specs/home.html']
+document.body.innerHTML = __html__['specs/home.html'];
 
 describe("JA app tests", function () {
     it("build", function(done) {
@@ -46,7 +46,7 @@ describe("JA app tests", function () {
         var homeDisplay = homePage.addDisplay({
             id: "homeDisplay",
             container: "#homeContainer",
-            template: "#tpl-homePage"
+            templateSelector: "#tpl-homePage"
         });
 
         homePage._displays.length.should.be.eql(1);

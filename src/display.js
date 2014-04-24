@@ -5,8 +5,12 @@ var displayTemplate = {
     beforeActivate: function (next) { next(); },
     
     render: function () {
-        this.$container.html(this._template());
+        this.$container.html(this.template.apply(this, arguments));
         return this;
+    },
+
+    template: function () {
+        return _.template($(this.templateSelector).html());
     }
 };
 
@@ -52,13 +56,5 @@ _.extend(JA.Display.prototype, {
     },
 
     hide: function () { this.$().hide(); },
-    show: function () { this.$().show(); },
-
-    _template: function () {
-        if (_.isFunction(this.template)) {
-            return this.template.apply(this, arguments);
-        }
-
-        return _.template($(this.template).html());
-    }
+    show: function () { this.$().show(); }
 });

@@ -26,7 +26,7 @@
                 }).addDisplay({
                     id: "homeDisplay",
                     container: "#homeContainer",
-                    template: "#homeDisplay" 
+                    templateSelector: "#homeDisplay" 
                 });
 
                 JA.addPage({
@@ -37,7 +37,7 @@
                 }).addDisplay({
                     id: "display1",
                     container: "#page1Container",
-                    template: "#page1Display" 
+                    templateSelector: "#page1Display" 
                 });
 
                 JA.addPage({
@@ -48,11 +48,11 @@
                 }).addDisplay({
                     id: "display2",
                     container: "#page2Container",
-                    template: "#page2Display" 
+                    templateSelector: "#page2Display" 
                 });
 
-                JA.startRouter();
                 JA.navigate('home');
+                JA.startRouter();
             });
         </script>
 

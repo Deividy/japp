@@ -5,6 +5,36 @@ var defaultErrorHandler = function (jqXHR, textStatus, errorThrown) {
     window.location.reload(true);
 };
 
+JA = {
+    build: function (options) {
+        if (!options) options = { };
+
+        var app = new JApp(options);
+        _.extend(this, app);
+    },
+
+    inherit: function (child, superclass) {
+        function c() {
+            this.constructor = child.constructor;
+        }
+        c.prototype = superclass.prototype;
+
+        for (var prop in superclass) {
+            if (Object.hasOwnProperty.call(superclass, prop)) {
+                child[prop] = superclass[prop];
+            }
+        }
+
+        child.prototype = new c();
+
+        return child;
+    },
+
+    extendAndApplyDefaults: function (context, obj, defaults) {
+        _.extend(context, _.defaults(obj, defaults));
+    }
+};
+
 var JApp = function (options) {
     this._activePage = null;
     this._activeDisplay = null;
@@ -15,16 +45,10 @@ var JApp = function (options) {
 
     _.extend(this, _.pick(options, allowedOptions));
     _.extend(this, Backbone.Events);
-
-    this.constructor.apply(this, arguments);
 };
 
 _.extend(JApp.prototype, {
     errorHandler: defaultErrorHandler,
-
-    constructor: function () {
-
-    },
 
     // routes
     createRoutesForPages: function () {
@@ -133,33 +157,3 @@ _.extend(JApp.prototype, {
     },
     //
 });
-
-JA = {
-    build: function (options) {
-        if (!options) options = { };
-
-        var app = new JApp(options);
-        _.extend(this, app);
-    },
-
-    inherit: function (child, superclass) {
-        function c() {
-            this.constructor = child.constructor;
-        }
-        c.prototype = superclass.prototype;
-
-        for (var prop in superclass) {
-            if (Object.hasOwnProperty.call(superclass, prop)) {
-                child[prop] = superclass[prop];
-            }
-        }
-
-        child.prototype = new c();
-
-        return child;
-    },
-
-    extendAndApplyDefaults: function (context, obj, defaults) {
-        _.extend(context, _.defaults(obj, defaults));
-    }
-};

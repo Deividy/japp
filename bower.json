@@ -1,0 +1,26 @@
+{
+    "name": "japp",
+    "main": "japp.js",
+    "version": "0.0.1",
+    "homepage": "https://github.com/Deividy/japp",
+    "authors": [
+        "Deividy Metheler <deividyz@gmail.com>"
+    ],
+    "description": "JA is fast and simple, just what you need to build a single page application",
+    "license": "MIT",
+    "ignore": [
+        "node_modules",
+        "bower_components",
+        "specs",
+        "src",
+        "karma.conf.js",
+        "Gruntfile.js",
+        "package.json"
+    ],
+    "dependencies": {
+        "jquery": "",
+        "underscore": "",
+        "backbone": "",
+        "functoids": "https://github.com/Deividy/functoids.git"
+    }
+}

@@ -1,6 +1,8 @@
-document.body.innerHTML = __html__['specs/home.html'];
-
 describe("JA app tests", function () {
+    before(function() {
+        document.body.innerHTML = __html__['specs/home.html'];
+    });  
+
     it("build", function(done) {
         if (JA.get) {
             done(".get() should be undefined at this point");

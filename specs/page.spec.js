@@ -1,8 +1,10 @@
-document.body.innerHTML = __html__['specs/home.html'];
-
-var page = null;
-
 describe("JA page tests", function () {
+    before(function() {
+        document.body.innerHTML = __html__['specs/home.html'];
+    });  
+
+    var page = null;
+
     it('instantiate', function () {
         page = new JA.Page({
             id: "JAPage"

@@ -6,7 +6,14 @@
     "authors": [
         "Deividy Metheler <deividyz@gmail.com>"
     ],
-    "description": "JA is fast and simple, just what you need to build a single page application",
+    "description": "Simple JS frontend framework for your application",
+    "keywords": [
+        "javascript",
+        "jsapp",
+        "application",
+        "web",
+        "frontend"
+    ],
     "license": "MIT",
     "ignore": [
         "node_modules",

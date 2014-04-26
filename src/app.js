@@ -1,9 +1,11 @@
-var allowedOptions = [ 'errorHandler', 'routes' ];
+var allowedOptions = [ 'errorHandler', 'routes', 'data' ];
 
 var defaultErrorHandler = function (jqXHR, textStatus, errorThrown) {
     alert(textStatus);
     window.location.reload(true);
 };
+
+$.ajaxSetup({ cache: false });
 
 JA = {
     build: function (options) {

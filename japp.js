@@ -1,4 +1,4 @@
-var allowedOptions = [ "errorHandler", "routes" ];
+var allowedOptions = [ "errorHandler", "routes", "data" ];
 
 var defaultErrorHandler = function(jqXHR, textStatus, errorThrown) {
     alert(textStatus);
@@ -104,7 +104,14 @@ _.extend(JApp.prototype, {
         F.demandGoodString(url, "url");
         F.demandObject(data, "data");
         F.demandFunction(callback, "callback");
-        $.get(url, data).done(callback).fail(this.errorHandler);
+        $.ajax({
+            type: "GET",
+            url: url,
+            data: data,
+            success: callback,
+            error: this.errorHandler,
+            cache: false
+        });
     },
     post: function(url, data, callback) {
         if (_.isFunction(data)) {
@@ -114,7 +121,13 @@ _.extend(JApp.prototype, {
         F.demandGoodString(url, "url");
         F.demandObject(data, "data");
         F.demandFunction(callback, "callback");
-        $.post(url, data).done(callback).fail(this.errorHandler);
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: data,
+            success: callback,
+            error: this.errorHandler
+        });
     }
 });
 

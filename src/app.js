@@ -5,8 +5,6 @@ var defaultErrorHandler = function (jqXHR, textStatus, errorThrown) {
     window.location.reload(true);
 };
 
-$.ajaxSetup({ cache: false });
-
 JA = {
     build: function (options) {
         if (!options) options = { };
@@ -138,7 +136,14 @@ _.extend(JApp.prototype, {
         F.demandObject(data, 'data');
         F.demandFunction(callback, 'callback');
 
-        $.get(url, data).done(callback).fail(this.errorHandler);
+        $.ajax({
+            type: "GET",
+            url: url,
+            data: data,
+            success: callback,
+            error: this.errorHandler,
+            cache: false
+        });
     },
 
     post: function (url, data, callback) {
@@ -151,7 +156,13 @@ _.extend(JApp.prototype, {
         F.demandObject(data, 'data');
         F.demandFunction(callback, 'callback');
 
-        $.post(url, data).done(callback).fail(this.errorHandler);
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: data,
+            success: callback,
+            error: this.errorHandler
+        });
     },
     //
 });

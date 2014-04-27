@@ -1,77 +1,80 @@
-var pageTemplate = {
-    _displays: [ ],
-    _displayById: { },
+(function () {
+    var template = {
+        isRoute: true,
+        afterDeactivate: function () { },
+        beforeDeactivate: function (next) {
+            next();
+        },
+        afterActivate: function () { },
+        beforeActivate: function (next) {
+            next();
+        }
+    };
 
-    isRoute: true,
+    JA.Page = function (options) {
+        F.demandGoodObject(options, "options");
+        F.demandGoodString(options.id, "options.id");
 
-    afterDeactivate: function () { },
-    beforeDeactivate: function (next) { next(); },
-    afterActivate: function () { },
-    beforeActivate: function (next) { next(); }
-};
+        _.extend(this, Backbone.Events);
 
-JA.Page = function (options) {
-    F.demandGoodObject(options, "options");
-    F.demandGoodString(options.id, "options.id");
+        _.extend(this, options);
+        _.defaults(this, template);
 
-    this._activeDisplay = null;
+        this._activeDisplay = null;
+        this._displays = [ ];
+        this._displayById = { };
+    };
 
-    _.extend(this, options);
-    _.defaults(this, pageTemplate);
-    _.extend(this, Backbone.Events);
+    _.extend(JA.Page.prototype, {
+        display: function (displayId) {
+            F.demandGoodString(displayId, 'displayId');
 
-    this._displays = [ ];
-};
+            var display = this._displayById[displayId];
+            if (display) return display;
 
-_.extend(JA.Page.prototype, {
-    display: function (displayId) {
-        F.demandGoodString(displayId, 'displayId');
+            throw new Error("Display " + displayId + " not found!");
+        },
 
-        var display = this._displayById[displayId];
-        if (display) return display;
+        addDisplay: function (displayObj) {
+            F.demandGoodObject(displayObj, 'displayObj');
 
-        throw new Error("Display " + displayId + " not found!");
-    },
+            var display = new JA.Display(displayObj)
+            this._displays.push(display);
+            this._displayById[display.id] = display;
 
-    addDisplay: function (displayObj) {
-        F.demandGoodObject(displayObj, 'displayObj');
+            display.hide();
 
-        var display = new JA.Display(displayObj)
-        this._displays.push(display);
-        this._displayById[display.id] = display;
+            return display;
+        },
 
-        display.hide();
+        activeAllDisplays: function () {
+            _.each(this._displays, function (display) {
+                display.activate();
+            });
+        },
 
-        return display;
-    },
+        deactiveAllDisplays: function () {
+            _.each(this._displays, function (display) {
+                display.deactivate();
+            });
+        },
 
-    activeAllDisplays: function () {
-        _.each(this._displays, function (display) {
-            display.activate();
-        });
-    },
+        activate: function () {
+            var self = this;
 
-    deactiveAllDisplays: function () {
-        _.each(this._displays, function (display) {
-            display.deactivate();
-        });
-    },
+            this.beforeActivate(function () {
+                self.activeAllDisplays();
+                self.afterActivate();
+            });
+        },
 
-    activate: function () {
-        var self = this;
+        deactivate: function () {
+            var self = this;
 
-        this.beforeActivate(function () {
-            self.activeAllDisplays();
-            self.afterActivate();
-        });
-    },
-
-    deactivate: function () {
-        var self = this;
-
-        this.beforeDeactivate(function () {
-            self.deactiveAllDisplays();
-            self.afterDeactivate();
-        });
-    }
-});
+            this.beforeDeactivate(function () {
+                self.deactiveAllDisplays();
+                self.afterDeactivate();
+            });
+        }
+    });
+} ());

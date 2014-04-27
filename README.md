@@ -24,7 +24,7 @@ Well.. I'm in!
 You can start your project _fast_.     
 You can grow _easily_.      
 You can use anything on backend, it's _just_ the frontend of your application.     
-You can use any other frontend component, like _bootstrap_ or _knockout_.
+You can use any other frontend component, like _bootstrap_ or  _knockout_.
 
 
 ## Next?

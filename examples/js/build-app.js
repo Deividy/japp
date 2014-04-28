@@ -1,1 +1,3 @@
-JA.build();
+$(function () {
+    JA.build();
+});

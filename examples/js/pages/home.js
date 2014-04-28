@@ -1,1 +1,3 @@
-JA.addPage({ id: "home" });
+$(function() {
+    JA.addPage({ id: "home" });
+});

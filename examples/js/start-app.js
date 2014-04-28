@@ -1,2 +1,4 @@
-JA.navigate('home');
-JA.startRouter();
+$(function () {
+    JA.navigate('home');
+    JA.startRouter();
+});

@@ -164,7 +164,7 @@
                 success: callback,
                 error: this.errorHandler
             });
-        },
+        }
         //
     });
 } ());

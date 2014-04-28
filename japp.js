@@ -26,14 +26,14 @@
         }
     };
     var JApp = function(options) {
+        _.extend(this, Backbone.Events);
+        _.extend(this, options);
+        _.defaults(this, template);
         this._activePage = null;
         this._activeDisplay = null;
         this._pages = [];
         this._pageById = {};
         this.routes = {};
-        _.extend(this, Backbone.Events);
-        _.extend(this, options);
-        _.defaults(this, template);
     };
     _.extend(JApp.prototype, {
         // routes
@@ -204,10 +204,10 @@
     JA.Page = function(options) {
         F.demandGoodObject(options, "options");
         F.demandGoodString(options.id, "options.id");
-        this._activeDisplay = null;
+        _.extend(this, Backbone.Events);
         _.extend(this, options);
         _.defaults(this, template);
-        _.extend(this, Backbone.Events);
+        this._activeDisplay = null;
         this._displays = [];
         this._displayById = {};
     };

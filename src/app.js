@@ -94,17 +94,13 @@
             throw new Error("Page " + pageId + " not found!");
         },
 
-        currentPage: function () {
+        activePage: function () {
             return this._activePage;
         },
-        currentDisplay: function () {
+        activeDisplay: function () {
             return this._activeDisplay;
         },
         //
-
-        currentDisplay: function () {
-            return this._activeDisplay;
-        },
 
         navigate: function (pageId) {
             F.demandGoodString(pageId, 'pageId');

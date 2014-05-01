@@ -141,7 +141,7 @@
             return _.template($(this.templateSelector).html());
         }
     };
-    var backboneViewMethods = [ "delegateEvents", "undelegateEvents" ];
+    var backboneViewMethods = [ "setElement", "remove", "delegateEvents", "undelegateEvents" ];
     JA.Display = function(options) {
         F.demandGoodObject(options, "options");
         F.demandGoodString(options.id, "options.id");

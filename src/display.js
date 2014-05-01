@@ -18,6 +18,8 @@
     };
 
     var backboneViewMethods = [
+        'setElement',
+        'remove',
         'delegateEvents',
         'undelegateEvents'
     ];

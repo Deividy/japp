@@ -47,13 +47,13 @@
             return display;
         },
 
-        activeAllDisplays: function () {
+        activateAllDisplays: function () {
             _.each(this._displays, function (display) {
                 display.activate();
             });
         },
 
-        deactiveAllDisplays: function () {
+        deactivateAllDisplays: function () {
             _.each(this._displays, function (display) {
                 display.deactivate();
             });
@@ -63,7 +63,7 @@
             var self = this;
 
             this.beforeActivate(function () {
-                self.activeAllDisplays();
+                self.activateAllDisplays();
                 self.afterActivate();
             });
         },
@@ -72,7 +72,7 @@
             var self = this;
 
             this.beforeDeactivate(function () {
-                self.deactiveAllDisplays();
+                self.deactivateAllDisplays();
                 self.afterDeactivate();
             });
         }

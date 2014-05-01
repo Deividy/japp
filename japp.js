@@ -30,7 +30,6 @@
         _.extend(this, options);
         _.defaults(this, template);
         this._activePage = null;
-        this._activeDisplay = null;
         this._pages = [];
         this._pageById = {};
         this.routes = {};
@@ -69,16 +68,10 @@
             if (page) return page;
             throw new Error("Page " + pageId + " not found!");
         },
-        currentPage: function() {
+        activePage: function() {
             return this._activePage;
         },
-        currentDisplay: function() {
-            return this._activeDisplay;
-        },
         //
-        currentDisplay: function() {
-            return this._activeDisplay;
-        },
         navigate: function(pageId) {
             F.demandGoodString(pageId, "pageId");
             this._activePage = null;
@@ -226,12 +219,12 @@
             display.hide();
             return display;
         },
-        activeAllDisplays: function() {
+        activateAllDisplays: function() {
             _.each(this._displays, function(display) {
                 display.activate();
             });
         },
-        deactiveAllDisplays: function() {
+        deactivateAllDisplays: function() {
             _.each(this._displays, function(display) {
                 display.deactivate();
             });
@@ -239,14 +232,14 @@
         activate: function() {
             var self = this;
             this.beforeActivate(function() {
-                self.activeAllDisplays();
+                self.activateAllDisplays();
                 self.afterActivate();
             });
         },
         deactivate: function() {
             var self = this;
             this.beforeDeactivate(function() {
-                self.deactiveAllDisplays();
+                self.deactivateAllDisplays();
                 self.afterDeactivate();
             });
         }

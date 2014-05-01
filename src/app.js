@@ -39,7 +39,6 @@
         _.defaults(this, template);
 
         this._activePage = null;
-        this._activeDisplay = null;
 
         this._pages = [ ];
         this._pageById = { };
@@ -96,9 +95,6 @@
 
         activePage: function () {
             return this._activePage;
-        },
-        activeDisplay: function () {
-            return this._activeDisplay;
         },
         //
 

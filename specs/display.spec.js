@@ -23,30 +23,6 @@ describe("JA display tests", function () {
         JA.addPage({ id: "pageTest1" }).addDisplay({
             id: 'pageDisplay',
             container: 'pageDisplayContainer',
-            beforeDeactivate: function (next) {
-                if (steps > 8) {
-                    steps.should.be.eql(10);
-                } else if (steps > 5) {
-                    steps.should.be.eql(8);
-                } else {
-                    steps.should.be.eql(5);
-                }
-
-                steps++;
-                next();
-            },
-            afterDeactivate: function () { 
-                if (steps > 9) {
-                    steps.should.be.eql(11);
-                } else if (steps > 6) {
-                    steps.should.be.eql(9);
-                } else {
-                    steps.should.be.eql(6);
-                }
-
-                steps++;
-            },
-
             beforeActivate: function (next) {
                 steps.should.be.eql(3);
                 steps++;
@@ -66,12 +42,12 @@ describe("JA display tests", function () {
             id: 'jaDisplay',
             container: 'jaDisplayContainer',
             beforeActivate: function (next) {
-                steps.should.be.eql(7);
-                steps++;
+                steps.should.be.eql(5);
+                steps++;               
                 next();
             },
             afterActivate: function () {
-                steps.should.be.eql(8);
+                steps.should.be.eql(6);
                 done();
             },
             render: function () {

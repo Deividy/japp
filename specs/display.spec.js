@@ -17,16 +17,17 @@ describe("JA display tests", function () {
         $("#homeTest").length.should.be.eql(1);
     });
 
-    // why are we hiting the activate events twice?
     it('custom methods', function (done) {
         var steps = 1;
 
-        JA.addPage({ id: "pageTest" }).addDisplay({
+        JA.addPage({ id: "pageTest1" }).addDisplay({
             id: 'pageDisplay',
             container: 'pageDisplayContainer',
             beforeDeactivate: function (next) {
-                if (steps > 5) {
+                if (steps > 8) {
                     steps.should.be.eql(10);
+                } else if (steps > 5) {
+                    steps.should.be.eql(8);
                 } else {
                     steps.should.be.eql(5);
                 }
@@ -35,8 +36,10 @@ describe("JA display tests", function () {
                 next();
             },
             afterDeactivate: function () { 
-                if (steps > 6) {
+                if (steps > 9) {
                     steps.should.be.eql(11);
+                } else if (steps > 6) {
+                    steps.should.be.eql(9);
                 } else {
                     steps.should.be.eql(6);
                 }
@@ -45,22 +48,12 @@ describe("JA display tests", function () {
             },
 
             beforeActivate: function (next) {
-                if (steps > 3) {
-                    steps.should.be.eql(8);
-                } else {
-                    steps.should.be.eql(3);
-                }
-
+                steps.should.be.eql(3);
                 steps++;
                 next();
             },
             afterActivate: function () {
-                if (steps > 4) {
-                    steps.should.be.eql(9);
-                } else {
-                    steps.should.be.eql(4);
-                }
-
+                steps.should.be.eql(4);
                 steps++;
             },
             render: function () {
@@ -69,24 +62,16 @@ describe("JA display tests", function () {
             }
         });
 
-        JA.addPage({ id: 'JAPage' }).addDisplay({
+        JA.addPage({ id: 'jaPage1' }).addDisplay({
             id: 'jaDisplay',
             container: 'jaDisplayContainer',
             beforeActivate: function (next) {
-                if (steps > 7) {
-                    steps.should.be.eql(12);
-                } else {
-                    steps.should.be.eql(7);
-                }
+                steps.should.be.eql(7);
                 steps++;
                 next();
             },
             afterActivate: function () {
-                if (steps > 8) {
-                    steps.should.be.eql(13)
-                } else {
-                    steps.should.be.eql(8);
-                }
+                steps.should.be.eql(8);
                 done();
             },
             render: function () {
@@ -95,7 +80,7 @@ describe("JA display tests", function () {
             }
         });
 
-        JA.navigate('pageTest');
-        JA.navigate('JAPage');
+        JA.navigate('pageTest1');
+        JA.navigate('jaPage1');
     });
 });

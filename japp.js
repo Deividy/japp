@@ -127,6 +127,7 @@
             });
         }
     });
+    JA.JApp = JApp;
 })();
 
 (function() {

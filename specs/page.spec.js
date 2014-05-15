@@ -32,16 +32,6 @@ describe("JA page tests", function () {
 
         JA.addPage({
             id: "pageTest",
-            beforeDeactivate: function (next) {
-                steps.should.be.eql(3);
-                steps++;
-                next();
-            },
-            afterDeactivate: function () { 
-                steps.should.be.eql(4);
-                steps++;
-            },
-
             beforeActivate: function (next) {
                 steps.should.be.eql(1);
                 steps++;
@@ -49,6 +39,15 @@ describe("JA page tests", function () {
             },
             afterActivate: function () {
                 steps.should.be.eql(2);
+                steps++;
+            },
+            beforeDeactivate: function (next) {
+                steps.should.be.eql(3);
+                steps++;
+                next();
+            },
+            afterDeactivate: function () { 
+                steps.should.be.eql(4);
                 steps++;
             }
         });

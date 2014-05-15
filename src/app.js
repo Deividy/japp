@@ -94,28 +94,33 @@
         },
 
         activePage: function () {
-            return this._activePage;
+            return this._activePage || { id: undefined };
         },
         //
 
         navigate: function (pageId) {
             F.demandGoodString(pageId, 'pageId');
 
-            this._activePage = null;
+            if (JA.activePage().id === pageId) return;
+
+            var activePage = null;
 
             _.each(this._pages, function (page) {
-                if (page.id !== pageId) {
+                if (page.id !== pageId && this.activePage().id === page.id) {
                     return page.deactivate();
                 }
 
-                page.activate();
-
-                this._activePage = page;
+                if (page.id === pageId) {
+                    page.activate();
+                    activePage = page;
+                }
             }, this);
 
-            if (this._activePage == null) {
+            if (activePage === null) {
                 throw new Error("Page " + pageId + " not found");
             }
+
+            this._activePage = activePage;
         },
 
         // ajax

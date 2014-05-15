@@ -6,7 +6,7 @@
         }
     };
 
-    JA = {
+    JA = window.JA = {
         build: function (options) {
             if (!options) options = { };
 

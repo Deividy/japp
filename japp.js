@@ -5,7 +5,7 @@
             window.location.reload(true);
         }
     };
-    JA = {
+    JA = window.JA = {
         build: function(options) {
             if (!options) options = {};
             var app = new JApp(options);

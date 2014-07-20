@@ -6,12 +6,21 @@
         }
     };
 
+
     JA = window.JA = {
+        initialized: false,
+
         build: function (options) {
+            if (this.initialized) {
+                throw new Error("JA is already initialized");
+            }
+
             if (!options) options = { };
 
             var app = new JApp(options);
             _.extend(this, app);
+
+            this.initialized = true;
         },
 
         inherit: function (child, superclass) {

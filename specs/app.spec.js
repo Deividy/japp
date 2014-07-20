@@ -1,3 +1,7 @@
+beforeEach(function() {
+    JA.initialized = false;
+});
+
 describe("JA app tests", function () {
     before(function() {
         document.body.innerHTML = __html__['specs/home.html'];

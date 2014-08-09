@@ -25,9 +25,7 @@
     ];
 
     JA.Display = function (options) {
-        F.demandGoodObject(options, "options");
-        F.demandGoodString(options.id, "options.id");
-        F.demandGoodString(options.container, "options.container");
+        ArgumentValidator.keysWithString(options, [ "id", "container" ], "options");
 
         _.extend(this, options);
         _.defaults(this, template);

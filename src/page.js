@@ -12,8 +12,7 @@
     };
 
     JA.Page = function (options) {
-        F.demandGoodObject(options, "options");
-        F.demandGoodString(options.id, "options.id");
+        ArgumentValidator.keysWithString(options, [ "id" ], "options");
 
         _.extend(this, Backbone.Events);
 
@@ -27,7 +26,7 @@
 
     _.extend(JA.Page.prototype, {
         display: function (displayId) {
-            F.demandGoodString(displayId, 'displayId');
+            ArgumentValidator.string(displayId, 'displayId');
 
             var display = this._displayById[displayId];
             if (display) return display;
@@ -36,7 +35,7 @@
         },
 
         addDisplay: function (displayObj) {
-            F.demandGoodObject(displayObj, 'displayObj');
+            ArgumentValidator.object(displayObj, 'displayObj');
 
             var display = new JA.Display(displayObj)
             this._displays.push(display);

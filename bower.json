@@ -28,6 +28,6 @@
         "jquery": "",
         "underscore": "",
         "backbone": "",
-        "functoids": "https://github.com/Deividy/functoids.git"
+        "argument-validator": ""
     }
 }

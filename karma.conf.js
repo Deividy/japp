@@ -14,7 +14,7 @@ module.exports = function(config) {
             'bower_components/jquery/dist/jquery.js',
             'bower_components/underscore/underscore.js',
             'bower_components/backbone/backbone.js',
-            'bower_components/functoids/functoids.js',
+            'bower_components/argument-validator/argument-validator.js',
             'node_modules/should/should.js',
 
             'src/app.js',

@@ -61,14 +61,14 @@
         //
         // pages
         addPage: function(pageObj) {
-            F.demandGoodObject(pageObj, "pageObj");
+            ArgumentValidator.object(pageObj, "pageObj");
             var page = new JA.Page(pageObj);
             this._pages.push(page);
             this._pageById[page.id] = page;
             return page;
         },
         page: function(pageId) {
-            F.demandGoodString(pageId, "pageId");
+            ArgumentValidator.string(pageId, "pageId");
             var page = this._pageById[pageId];
             if (page) return page;
             throw new Error("Page " + pageId + " not found!");
@@ -80,7 +80,7 @@
         },
         //
         navigate: function(pageId) {
-            F.demandGoodString(pageId, "pageId");
+            ArgumentValidator.string(pageId, "pageId");
             if (JA.activePage().id === pageId) return;
             var activePage = null;
             _.each(this._pages, function(page) {
@@ -103,9 +103,9 @@
                 callback = data;
                 data = {};
             }
-            F.demandGoodString(url, "url");
-            F.demandObject(data, "data");
-            F.demandFunction(callback, "callback");
+            ArgumentValidator.string(url, "url");
+            ArgumentValidator.objectOrEmpty(data, "data");
+            ArgumentValidator.type("Function", callback, "callback");
             $.ajax({
                 type: "GET",
                 url: url,
@@ -120,9 +120,9 @@
                 callback = data;
                 data = {};
             }
-            F.demandGoodString(url, "url");
-            F.demandObject(data, "data");
-            F.demandFunction(callback, "callback");
+            ArgumentValidator.string(url, "url");
+            ArgumentValidator.objectOrEmpty(data, "data");
+            ArgumentValidator.type("Function", callback, "callback");
             $.ajax({
                 type: "POST",
                 url: url,
@@ -155,9 +155,7 @@
     };
     var backboneViewMethods = [ "setElement", "remove", "delegateEvents", "undelegateEvents" ];
     JA.Display = function(options) {
-        F.demandGoodObject(options, "options");
-        F.demandGoodString(options.id, "options.id");
-        F.demandGoodString(options.container, "options.container");
+        ArgumentValidator.keysWithString(options, [ "id", "container" ], "options");
         _.extend(this, options);
         _.defaults(this, template);
         if (!this.selector) this.selector = this.container;
@@ -207,8 +205,7 @@
         }
     };
     JA.Page = function(options) {
-        F.demandGoodObject(options, "options");
-        F.demandGoodString(options.id, "options.id");
+        ArgumentValidator.keysWithString(options, [ "id" ], "options");
         _.extend(this, Backbone.Events);
         _.extend(this, options);
         _.defaults(this, template);
@@ -218,13 +215,13 @@
     };
     _.extend(JA.Page.prototype, {
         display: function(displayId) {
-            F.demandGoodString(displayId, "displayId");
+            ArgumentValidator.string(displayId, "displayId");
             var display = this._displayById[displayId];
             if (display) return display;
             throw new Error("Display " + displayId + " not found!");
         },
         addDisplay: function(displayObj) {
-            F.demandGoodObject(displayObj, "displayObj");
+            ArgumentValidator.object(displayObj, "displayObj");
             var display = new JA.Display(displayObj);
             this._displays.push(display);
             this._displayById[display.id] = display;

@@ -84,7 +84,7 @@
 
         // pages
         addPage: function (pageObj) {
-            F.demandGoodObject(pageObj, 'pageObj');
+            ArgumentValidator.object(pageObj, 'pageObj');
 
             var page = new JA.Page(pageObj);
             this._pages.push(page);
@@ -94,7 +94,7 @@
         },
 
         page: function (pageId) {
-            F.demandGoodString(pageId, 'pageId');
+            ArgumentValidator.string(pageId, 'pageId');
 
             var page = this._pageById[pageId];
             if (page) return page;
@@ -108,7 +108,7 @@
         //
 
         navigate: function (pageId) {
-            F.demandGoodString(pageId, 'pageId');
+            ArgumentValidator.string(pageId, 'pageId');
 
             if (JA.activePage().id === pageId) return;
 
@@ -139,9 +139,9 @@
                 data = { };
             }
 
-            F.demandGoodString(url, 'url');
-            F.demandObject(data, 'data');
-            F.demandFunction(callback, 'callback');
+            ArgumentValidator.string(url, 'url');
+            ArgumentValidator.objectOrEmpty(data, 'data');
+            ArgumentValidator.type('Function', callback, 'callback');
 
             $.ajax({
                 type: "GET",
@@ -159,9 +159,9 @@
                 data = { };
             }
 
-            F.demandGoodString(url, 'url');
-            F.demandObject(data, 'data');
-            F.demandFunction(callback, 'callback');
+            ArgumentValidator.string(url, 'url');
+            ArgumentValidator.objectOrEmpty(data, 'data');
+            ArgumentValidator.type('Function', callback, 'callback');
 
             $.ajax({
                 type: "POST",

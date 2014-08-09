@@ -1,7 +1,7 @@
 {
     "name": "japp-client",
     "description": "Easy & Simple JS Application",
-    "version": "0.0.1",
+    "version": "0.0.10",
     "private": false,
     "devDependencies": {
         "mocha": "",

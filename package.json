@@ -10,6 +10,7 @@
         "karma-script-launcher": "",
         "karma-chrome-launcher": "",
         "karma-firefox-launcher": "",
+        "karma-phantomjs-launcher": "",
         "karma-html2js-preprocessor": "",
         "karma": "",
         "grunt": "",

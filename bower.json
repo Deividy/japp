@@ -1,8 +1,8 @@
 {
     "name": "japp",
     "main": "japp.js",
-    "version": "0.0.10",
-    "homepage": "https://github.com/Deividy/japp-client",
+    "version": "0.0.11",
+    "homepage": "https://github.com/Deividy/japp",
     "authors": [
         "Deividy Metheler <deividyz@gmail.com>"
     ],

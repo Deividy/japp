@@ -143,7 +143,7 @@
             ArgumentValidator.objectOrEmpty(data, 'data');
             ArgumentValidator.type('Function', callback, 'callback');
 
-            $.ajax({
+            return $.ajax({
                 type: "GET",
                 url: url,
                 data: data,
@@ -163,7 +163,7 @@
             ArgumentValidator.objectOrEmpty(data, 'data');
             ArgumentValidator.type('Function', callback, 'callback');
 
-            $.ajax({
+            return $.ajax({
                 type: "POST",
                 url: url,
                 data: data,

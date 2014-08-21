@@ -63,6 +63,7 @@ describe("JA app tests", function () {
         $("#homeContainer").css("display").should.be.eql('none');
 
         JA.navigate('homePage');
+        JA.page('homePage').activateAllDisplays();
         $("#homeContainer").css("display").should.be.eql('block');
 
         var page = JA.page('homePage');

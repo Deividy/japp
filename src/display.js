@@ -37,6 +37,8 @@
 
         this.$el = this.$();
         this.delegateEvents(this.events);
+
+        this.isActive = false;
     };
 
     _.extend(JA.Display.prototype, {
@@ -48,6 +50,8 @@
             var self = this;
 
             this.beforeActivate(function() {
+                self.isActive = true;
+
                 self.show();
                 self.afterActivate();
             });
@@ -57,6 +61,8 @@
             var self = this;
 
             this.beforeDeactivate(function() {
+                self.isActive = false;
+
                 self.hide();
                 self.afterDeactivate();
             });

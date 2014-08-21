@@ -24,7 +24,8 @@ describe("JA display tests", function () {
     it('custom methods', function (done) {
         var steps = 0;
 
-        JA.addPage({ id: "pageTest1" }).addDisplay({
+        JA.addPage({
+            id: "pageTest1" }).addDisplay({
             id: 'pageDisplay',
             container: 'pageDisplayContainer',
             beforeActivate: function (next) {

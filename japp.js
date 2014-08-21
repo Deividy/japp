@@ -163,6 +163,7 @@
         this.render();
         this.$el = this.$();
         this.delegateEvents(this.events);
+        this.isActive = false;
     };
     _.extend(JA.Display.prototype, {
         $: function() {
@@ -171,6 +172,7 @@
         activate: function() {
             var self = this;
             this.beforeActivate(function() {
+                self.isActive = true;
                 self.show();
                 self.afterActivate();
             });
@@ -178,6 +180,7 @@
         deactivate: function() {
             var self = this;
             this.beforeDeactivate(function() {
+                self.isActive = false;
                 self.hide();
                 self.afterDeactivate();
             });
@@ -201,6 +204,8 @@
         },
         afterActivate: function() {},
         beforeActivate: function(next) {
+            // by default we always activate the first display of a page
+            this._displays[0].activate();
             next();
         }
     };
@@ -230,18 +235,21 @@
         },
         activateAllDisplays: function() {
             _.each(this._displays, function(display) {
-                display.activate();
+                if (!display.isActive) {
+                    display.activate();
+                }
             });
         },
         deactivateAllDisplays: function() {
             _.each(this._displays, function(display) {
-                display.deactivate();
+                if (display.isActive) {
+                    display.deactivate();
+                }
             });
         },
         activate: function() {
             var self = this;
             this.beforeActivate(function() {
-                self.activateAllDisplays();
                 self.afterActivate();
             });
         },

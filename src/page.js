@@ -7,6 +7,8 @@
         },
         afterActivate: function () { },
         beforeActivate: function (next) {
+            // by default we always activate the first display of a page
+            this._displays[0].activate();
             next();
         }
     };
@@ -48,13 +50,17 @@
 
         activateAllDisplays: function () {
             _.each(this._displays, function (display) {
-                display.activate();
+                if (!display.isActive) {
+                    display.activate();
+                }
             });
         },
 
         deactivateAllDisplays: function () {
             _.each(this._displays, function (display) {
-                display.deactivate();
+                if (display.isActive) {
+                    display.deactivate();
+                }
             });
         },
 
@@ -62,7 +68,6 @@
             var self = this;
 
             this.beforeActivate(function () {
-                self.activateAllDisplays();
                 self.afterActivate();
             });
         },

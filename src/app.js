@@ -42,8 +42,9 @@
     };
 
     var JApp = function (options) {
-        _.extend(this, Backbone.Events);
+        this.routes = { };
 
+        _.extend(this, Backbone.Events);
         _.extend(this, options);
         _.defaults(this, template);
 
@@ -51,7 +52,6 @@
 
         this._pages = [ ];
         this._pageById = { };
-        this.routes = { };
     };
 
     _.extend(JApp.prototype, {

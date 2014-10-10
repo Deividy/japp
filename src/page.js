@@ -7,8 +7,6 @@
         },
         afterActivate: function () { },
         beforeActivate: function (next) {
-            // by default we always activate the first display of a page
-            this._displays[0].activate();
             next();
         }
     };
@@ -68,6 +66,7 @@
             var self = this;
 
             this.beforeActivate(function () {
+                self.activateAllDisplays();
                 self.afterActivate();
             });
         },

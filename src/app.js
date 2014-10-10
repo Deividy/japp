@@ -1,8 +1,13 @@
 (function () {
     var template = {
-        errorHander: function (jqXHR, textStatus, erorThrown) {
+        errorHandler: function (jqXHR, textStatus, erorThrown) {
             alert(textStatus);
             window.location.reload(true);
+        },
+
+        loading: {
+            show: function () { },
+            hide: function () { }
         }
     };
 
@@ -52,6 +57,8 @@
 
         this._pages = [ ];
         this._pageById = { };
+
+        this.runningTasks = [ ];
     };
 
     _.extend(JApp.prototype, {
@@ -143,12 +150,30 @@
             ArgumentValidator.objectOrEmpty(data, 'data');
             ArgumentValidator.type('Function', callback, 'callback');
 
+            this.loading.show();
+
+            var runningTask = {
+                method: 'get',
+                url: url,
+                data: data,
+                callback: callback
+            };
+            var runningTaskIndex = this.runningTasks.push(runningTask);
+
             return $.ajax({
                 type: "GET",
                 url: url,
                 data: data,
-                success: callback,
-                error: this.errorHandler,
+                success: _.bind(function () {
+                    this.runningTasks.splice(runningTaskIndex - 1, 1);
+
+                    if (this.runningTasks.length === 0) {
+                        this.loading.hide();
+                    }
+
+                    callback.apply(this, arguments);
+                }, this),
+                error: _.bind(this.errorHandler, this),
                 cache: false
             });
         },
@@ -163,16 +188,31 @@
             ArgumentValidator.objectOrEmpty(data, 'data');
             ArgumentValidator.type('Function', callback, 'callback');
 
+            this.loading.show();
+
+            var runningTask = {
+                method: 'post',
+                url: url,
+                data: data,
+                callback: callback
+            };
+            var runningTaskIndex = this.runningTasks.push(runningTask);
+
             return $.ajax({
                 type: "POST",
                 url: url,
                 data: data,
-                success: callback,
-                error: this.errorHandler
+                success: _.bind(function () {
+                    this.runningTasks.splice(runningTaskIndex - 1, 1);
+
+                    if (this.runningTasks.length === 0) {
+                        this.loading.hide();
+                    }
+                    callback.apply(this, arguments);
+                }, this),
+                error: _.bind(this.errorHandler)
             });
         }
         //
     });
-
-    JA.JApp = JApp;
 } ());

@@ -7,13 +7,6 @@
         afterActivate: function () { },
         beforeActivate: function (next) {
             next();
-        },
-        render: function () {
-            this.$container.html(this.template());
-            return this;
-        },
-        template: function () {
-            return _.template($(this.templateSelector).html());
         }
     };
 
@@ -33,7 +26,6 @@
         if (!this.selector) this.selector = this.container;
 
         this.$container = $(this.container);
-        this.render();
 
         this.$el = this.$();
         this.delegateEvents(this.events);

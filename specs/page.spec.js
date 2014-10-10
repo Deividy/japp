@@ -16,12 +16,9 @@ describe("JA page tests", function () {
     });
 
     it('add display', function () {
-        page._displays.length.should.eql(0);
-
         page.addDisplay({
             id: "JADisplay",
-            container: "#homeContainer",
-            templateSelector: "#tpl-homePage"
+            container: "#homeContainer"
         });
 
         page._displays.length.should.eql(1);

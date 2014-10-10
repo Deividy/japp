@@ -41,20 +41,14 @@ describe("JA app tests", function () {
     });
 
     it('add display', function () {
-        $("#homeTest").length.should.be.eql(0);
-
         var homePage = JA.page('homePage');
-        homePage._displays.length.should.be.eql(0);
-
         var homeDisplay = homePage.addDisplay({
             id: "homeDisplay",
-            container: "#homeContainer",
-            templateSelector: "#tpl-homePage"
+            container: "#homeContainer"
         });
 
         homePage._displays.length.should.be.eql(1);
         homePage._displayById['homeDisplay'].should.be.eql(homeDisplay);
-
         $("#homeTest").length.should.be.eql(1);
     });
 
@@ -94,7 +88,7 @@ describe("JA app tests", function () {
                 done();
             }
         });
-        JA.get("https://google.com/", function () { });
+        JA.get("http://notexists../", function () { });
     });
 
     it("post error", function (done) {
@@ -104,7 +98,7 @@ describe("JA app tests", function () {
                 done();
             }
         });
-        JA.post("https://google.com/", function () {});
+        JA.get("http://notexists../", function () { });
     });
     //
 });

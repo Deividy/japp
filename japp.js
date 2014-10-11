@@ -47,7 +47,6 @@
         this.runningTasks = [];
     };
     _.extend(JApp.prototype, {
-        // routes
         createRoutesForPages: function() {
             var self = this;
             _.each(this._pages, function(page) {
@@ -65,8 +64,6 @@
             this.router = new Router();
             Backbone.history.start();
         },
-        //
-        // pages
         addPage: function(pageObj) {
             ArgumentValidator.object(pageObj, "pageObj");
             var page = new JA.Page(pageObj);
@@ -85,7 +82,6 @@
                 id: undefined
             };
         },
-        //
         navigate: function(pageId) {
             ArgumentValidator.string(pageId, "pageId");
             if (JA.activePage().id === pageId) return;
@@ -104,7 +100,6 @@
             }
             this._activePage = activePage;
         },
-        // ajax
         get: function(url, data, callback) {
             if (_.isFunction(data)) {
                 callback = data;
@@ -163,7 +158,7 @@
                     }
                     callback.apply(this, arguments);
                 }, this),
-                error: _.bind(this.errorHandler)
+                error: _.bind(this.errorHandler, this)
             });
         }
     });
@@ -195,11 +190,17 @@
         $: function() {
             return $(this.selector);
         },
+        $hide: function() {
+            this.$().hide();
+        },
+        $show: function() {
+            this.$().show();
+        },
         activate: function() {
             var self = this;
             this.beforeActivate(function() {
                 self.isActive = true;
-                self.show();
+                self.$show();
                 self.afterActivate();
             });
         },
@@ -207,15 +208,12 @@
             var self = this;
             this.beforeDeactivate(function() {
                 self.isActive = false;
-                self.hide();
+                self.$hide();
                 self.afterDeactivate();
             });
         },
-        hide: function() {
-            this.$().hide();
-        },
-        show: function() {
-            this.$().show();
+        toggle: function() {
+            return this.isActive ? this.deactivate() : this.activate();
         }
     });
     _.extend(JA.Display.prototype, _.pick(Backbone.View.prototype, backboneViewMethods));
@@ -254,7 +252,10 @@
             var display = new JA.Display(displayObj);
             this._displays.push(display);
             this._displayById[display.id] = display;
-            display.hide();
+            // we do this $hide() here because is handsome and we dont need
+            // to add display: none to every display, this is always the desired
+            // behavior, since we will $show the display when activate it
+            display.$hide();
             return display;
         },
         activateAllDisplays: function() {

@@ -23,6 +23,7 @@
             if (!options) options = { };
 
             var app = new JApp(options);
+
             for (var key in app) {
                 this[key] = app[key];
             }
@@ -64,7 +65,6 @@
     };
 
     _.extend(JApp.prototype, {
-        // routes
         createRoutesForPages: function () {
             var self = this;
 
@@ -89,9 +89,7 @@
 
             Backbone.history.start();
         },
-        //
 
-        // pages
         addPage: function (pageObj) {
             ArgumentValidator.object(pageObj, 'pageObj');
 
@@ -114,7 +112,6 @@
         activePage: function () {
             return this._activePage || { id: undefined };
         },
-        //
 
         navigate: function (pageId) {
             ArgumentValidator.string(pageId, 'pageId');
@@ -141,7 +138,6 @@
             this._activePage = activePage;
         },
 
-        // ajax
         get: function (url, data, callback) {
             if (_.isFunction(data)) {
                 callback = data;
@@ -212,9 +208,8 @@
                     }
                     callback.apply(this, arguments);
                 }, this),
-                error: _.bind(this.errorHandler)
+                error: _.bind(this.errorHandler, this)
             });
         }
-        //
     });
 } ());

@@ -41,7 +41,10 @@
             this._displays.push(display);
             this._displayById[display.id] = display;
 
-            display.hide();
+            // we do this $hide() here because is handsome and we dont need
+            // to add display: none to every display, this is always the desired
+            // behavior, since we will $show the display when activate it
+            display.$hide();
 
             return display;
         },

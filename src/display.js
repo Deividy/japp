@@ -34,9 +34,9 @@
     };
 
     _.extend(JA.Display.prototype, {
-        $: function () {
-            return $(this.selector);
-        },
+        $: function () { return $(this.selector); },
+        $hide: function () { this.$().hide(); },
+        $show: function () { this.$().show(); },
 
         activate: function () {
             var self = this;
@@ -44,7 +44,7 @@
             this.beforeActivate(function() {
                 self.isActive = true;
 
-                self.show();
+                self.$show();
                 self.afterActivate();
             });
         },
@@ -55,13 +55,14 @@
             this.beforeDeactivate(function() {
                 self.isActive = false;
 
-                self.hide();
+                self.$hide();
                 self.afterDeactivate();
             });
         },
 
-        hide: function () { this.$().hide(); },
-        show: function () { this.$().show(); }
+        toggle: function () {
+            return this.isActive ? this.deactivate() : this.activate();
+        }
     });
 
     _.extend(JA.Display.prototype,

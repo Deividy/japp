@@ -17,7 +17,9 @@
             }
             if (!options) options = {};
             var app = new JApp(options);
-            _.extend(this, app);
+            for (var key in app) {
+                this[key] = app[key];
+            }
             this.initialized = true;
         },
         inherit: function(child, superclass) {

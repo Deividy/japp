@@ -252,7 +252,7 @@
             var display = new JA.Display(displayObj);
             this._displays.push(display);
             this._displayById[display.id] = display;
-            // we do this $hide() here because is handsome and we dont need
+            // we do this $hide() here because is handy and we dont need
             // to add display: none to every display, this is always the desired
             // behavior, since we will $show the display when activate it
             display.$hide();

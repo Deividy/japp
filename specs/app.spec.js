@@ -40,6 +40,7 @@ describe("JA app tests", function () {
         JA.page("homePage").should.be.eql(homePage);
     });
 
+
     it('add display', function () {
         var homePage = JA.page('homePage');
         var homeDisplay = homePage.addDisplay({
@@ -70,13 +71,6 @@ describe("JA app tests", function () {
     it('get', function (done) {
         JA.build();
         JA.get("/", function (data, textStatus, jqXHR) {
-            done();
-        });
-    });
-
-    it('post', function (done) {
-        JA.build();
-        JA.post("/", function (data, textStatus, jqXHR) {
             done();
         });
     });

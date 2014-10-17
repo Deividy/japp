@@ -138,6 +138,28 @@
             this._activePage = activePage;
         },
 
+        addRunningTask: function (object) {
+            ArgumentValidator.object(object, 'object')
+
+            var id = new Date().getTime()
+            this.runningTasks.push(_.extend(object, { id: id }))
+            return id
+        },
+
+        removeRunningTask: function (id) {
+            ArgumentValidator.number(id, 'id')
+
+            var idx = this.runningTasks.length;
+            while (idx--) {
+                if (this.runningTasks[idx].id === id) {
+                    this.runningTasks.splice(idx, 1);
+                    return true;
+                }
+            }
+            
+            return false;
+        },
+
         get: function (url, data, callback) {
             if (_.isFunction(data)) {
                 callback = data;
@@ -149,21 +171,16 @@
             ArgumentValidator.type('Function', callback, 'callback');
 
             this.loading.show();
-
-            var runningTask = {
-                method: 'get',
-                url: url,
-                data: data,
-                callback: callback
-            };
-            var runningTaskIndex = this.runningTasks.push(runningTask);
+            var runningTaskId = this.addRunningTask({
+                method: 'get', url: url, data: data, callback: callback 
+            });
 
             return $.ajax({
                 type: "GET",
                 url: url,
                 data: data,
                 success: _.bind(function () {
-                    this.runningTasks.splice(runningTaskIndex - 1, 1);
+                    this.removeRunningTask(runningTaskId)
 
                     if (this.runningTasks.length === 0) {
                         this.loading.hide();
@@ -187,21 +204,17 @@
             ArgumentValidator.type('Function', callback, 'callback');
 
             this.loading.show();
-
-            var runningTask = {
-                method: 'post',
-                url: url,
-                data: data,
-                callback: callback
-            };
-            var runningTaskIndex = this.runningTasks.push(runningTask);
+            var runningTaskId = this.addRunningTask({
+                method: 'post', url: url, data: data, callback: callback 
+            });
 
             return $.ajax({
                 type: "POST",
                 url: url,
+                dataType: 'json',
                 data: data,
                 success: _.bind(function () {
-                    this.runningTasks.splice(runningTaskIndex - 1, 1);
+                    this.removeRunningTask(runningTaskId)
 
                     if (this.runningTasks.length === 0) {
                         this.loading.hide();

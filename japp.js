@@ -20,6 +20,7 @@
             for (var key in app) {
                 this[key] = app[key];
             }
+            this.errorHandler = _.bind(this.errorHandler, this);
             this.initialized = true;
         },
         inherit: function(child, superclass) {
@@ -120,36 +121,15 @@
             return false;
         },
         get: function(url, data, callback) {
-            if (_.isFunction(data)) {
-                callback = data;
-                data = {};
-            }
-            ArgumentValidator.string(url, "url");
-            ArgumentValidator.objectOrEmpty(data, "data");
-            ArgumentValidator.type("Function", callback, "callback");
-            this.loading.show();
-            var runningTaskId = this.addRunningTask({
-                method: "get",
-                url: url,
-                data: data,
-                callback: callback
-            });
-            return $.ajax({
-                type: "GET",
-                url: url,
-                data: data,
-                success: _.bind(function() {
-                    this.removeRunningTask(runningTaskId);
-                    if (this.runningTasks.length === 0) {
-                        this.loading.hide();
-                    }
-                    callback.apply(this, arguments);
-                }, this),
-                error: _.bind(this.errorHandler, this),
-                cache: false
-            });
+            return this.ajax("get", url, data, callback);
         },
         post: function(url, data, callback) {
+            return this.ajax("post", url, data, callback);
+        },
+        "delete": function(url, data, callback) {
+            return this.ajax("delete", url, data, callback);
+        },
+        ajax: function(method, url, data, callback) {
             if (_.isFunction(data)) {
                 callback = data;
                 data = {};
@@ -159,13 +139,13 @@
             ArgumentValidator.type("Function", callback, "callback");
             this.loading.show();
             var runningTaskId = this.addRunningTask({
-                method: "post",
+                method: method,
                 url: url,
                 data: data,
                 callback: callback
             });
             return $.ajax({
-                type: "POST",
+                type: method.toUpperCase(),
                 url: url,
                 dataType: "json",
                 data: data,
@@ -176,7 +156,8 @@
                     }
                     callback.apply(this, arguments);
                 }, this),
-                error: _.bind(this.errorHandler, this)
+                error: this.errorHandler,
+                cache: false
             });
         }
     });
@@ -191,7 +172,9 @@
         afterActivate: function() {},
         beforeActivate: function(next) {
             next();
-        }
+        },
+        events: {},
+        constructor: function() {}
     };
     var backboneViewMethods = [ "setElement", "remove", "delegateEvents", "undelegateEvents" ];
     JA.Display = function(options) {
@@ -199,10 +182,18 @@
         _.extend(this, options);
         _.defaults(this, template);
         if (!this.selector) this.selector = this.container;
-        this.$container = $(this.container);
-        this.$el = this.$();
-        this.delegateEvents(this.events);
         this.isActive = false;
+        for (var eventString in this.events) {
+            var s = eventString.split(">");
+            var events = s[0];
+            var selector = s[1];
+            var handler = _.bind(this.events[eventString], this);
+            this.$().on(events.trim(), selector.trim(), handler);
+        }
+        var context = this;
+        $(document).ready(function() {
+            options.constructor.call(context);
+        });
     };
     _.extend(JA.Display.prototype, {
         $: function() {
@@ -247,7 +238,8 @@
         afterActivate: function() {},
         beforeActivate: function(next) {
             next();
-        }
+        },
+        routes: {}
     };
     JA.Page = function(options) {
         ArgumentValidator.keysWithString(options, [ "id" ], "options");
@@ -257,6 +249,9 @@
         this._activeDisplay = null;
         this._displays = [];
         this._displayById = {};
+        for (var route in this.routes) {
+            JA.routes[route] = _.bind(this.routes[route], this);
+        }
     };
     _.extend(JA.Page.prototype, {
         display: function(displayId) {

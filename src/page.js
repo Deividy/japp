@@ -8,7 +8,8 @@
         afterActivate: function () { },
         beforeActivate: function (next) {
             next();
-        }
+        },
+        routes: { }
     };
 
     JA.Page = function (options) {
@@ -22,6 +23,10 @@
         this._activeDisplay = null;
         this._displays = [ ];
         this._displayById = { };
+
+        for (var route in this.routes) {
+            JA.routes[route] = _.bind(this.routes[route], this); 
+        }
     };
 
     _.extend(JA.Page.prototype, {

@@ -7,7 +7,9 @@
         afterActivate: function () { },
         beforeActivate: function (next) {
             next();
-        }
+        },
+        events: { },
+        constructor: function () { }
     };
 
     var backboneViewMethods = [
@@ -25,12 +27,23 @@
 
         if (!this.selector) this.selector = this.container;
 
-        this.$container = $(this.container);
-
-        this.$el = this.$();
-        this.delegateEvents(this.events);
-
         this.isActive = false;
+
+        for (var eventString in this.events) {
+            var s = eventString.split(">");
+
+            var events = s[0];
+            var selector = s[1];
+
+            var handler = _.bind(this.events[eventString], this);
+            this.$().on(events.trim(), selector.trim(), handler);
+        }
+
+        var context = this;
+        $(document).ready(function () {
+            options.constructor.call(context);
+        })
+
     };
 
     _.extend(JA.Display.prototype, {

@@ -28,6 +28,7 @@ describe("JA app tests", function () {
         JA.errorHandler("Test");
     });
 
+
     // add
     it('add page', function () {
         JA.build();
@@ -67,14 +68,8 @@ describe("JA app tests", function () {
         $("#homeContainer").css("display").should.be.eql('none');
     });
 
-    // ajax
-    it('get', function (done) {
-        JA.build();
-        JA.get("/", function (data, textStatus, jqXHR) {
-            done();
-        });
-    });
 
+    // ajax
     it("get error", function (done) {
         JA.build({
             errorHandler: function (jqXHR, textStatus, errorThrown) {

@@ -28,6 +28,7 @@
                 this[key] = app[key];
             }
 
+            this.errorHandler = _.bind(this.errorHandler, this);
             this.initialized = true;
         },
 
@@ -161,39 +162,18 @@
         },
 
         get: function (url, data, callback) {
-            if (_.isFunction(data)) {
-                callback = data;
-                data = { };
-            }
-
-            ArgumentValidator.string(url, 'url');
-            ArgumentValidator.objectOrEmpty(data, 'data');
-            ArgumentValidator.type('Function', callback, 'callback');
-
-            this.loading.show();
-            var runningTaskId = this.addRunningTask({
-                method: 'get', url: url, data: data, callback: callback 
-            });
-
-            return $.ajax({
-                type: "GET",
-                url: url,
-                data: data,
-                success: _.bind(function () {
-                    this.removeRunningTask(runningTaskId)
-
-                    if (this.runningTasks.length === 0) {
-                        this.loading.hide();
-                    }
-
-                    callback.apply(this, arguments);
-                }, this),
-                error: _.bind(this.errorHandler, this),
-                cache: false
-            });
+            return this.ajax('get', url, data, callback);
         },
 
         post: function (url, data, callback) {
+            return this.ajax('post', url, data, callback);
+        },
+
+        delete: function (url, data, callback) {
+            return this.ajax('delete', url, data, callback);
+        },
+
+        ajax: function (method, url, data, callback) {
             if (_.isFunction(data)) {
                 callback = data;
                 data = { };
@@ -205,11 +185,11 @@
 
             this.loading.show();
             var runningTaskId = this.addRunningTask({
-                method: 'post', url: url, data: data, callback: callback 
+                method: method, url: url, data: data, callback: callback 
             });
 
             return $.ajax({
-                type: "POST",
+                type: method.toUpperCase(),
                 url: url,
                 dataType: 'json',
                 data: data,
@@ -221,8 +201,9 @@
                     }
                     callback.apply(this, arguments);
                 }, this),
-                error: _.bind(this.errorHandler, this)
-            });
+                error: this.errorHandler,
+                cache: false
+            });  
         }
     });
 } ());

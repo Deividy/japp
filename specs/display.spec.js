@@ -47,6 +47,7 @@ describe("JA display tests", function () {
         JA.activePage().deactivate();
     });
 
+
     it('two displays', function (done) {
         var steps = 1;
 

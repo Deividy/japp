@@ -173,6 +173,10 @@
             return this.ajax('delete', url, data, callback);
         },
 
+        put: function (url, data, callback) {
+            return this.ajax('put', url, data, callback);
+        },
+
         ajax: function (method, url, data, callback) {
             if (_.isFunction(data)) {
                 callback = data;
